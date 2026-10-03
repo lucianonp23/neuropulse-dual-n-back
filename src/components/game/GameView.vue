@@ -16,7 +16,7 @@ const { currentTrial, responded, feedback, isAudioPlaying, canRespond, progress,
 
     <SpatialGrid :trial="currentTrial" />
 
-    <div class="grid grid-cols-2 gap-6 w-full max-w-md">
+    <div class="grid grid-cols-2 gap-6 w-full max-w-md touch-none">
       <ResponseButton
         label="POSIÇÃO (A)"
         :n="settings.n"

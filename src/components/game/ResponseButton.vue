@@ -24,11 +24,20 @@ const stateClass = computed(() => {
 </script>
 
 <template>
-  <button 
-    @click="$emit('respond')"
+  <!--
+    Responds on pointerdown so two fingers can hit both buttons at once: each touch gets
+    its own pointer event, while `click` only fires on release and is dropped for multi-touch.
+    `click` is kept only for keyboard activation (detail === 0), so a held finger can't
+    register a stale click on the next trial. touch-none stops the browser from treating
+    two simultaneous touches as a pinch/zoom gesture.
+  -->
+  <button
+    @pointerdown.prevent="$emit('respond')"
+    @click="(e: MouseEvent) => e.detail === 0 && $emit('respond')"
     :disabled="!enabled || responded"
     :class="[
       'h-24 rounded-2xl border-2 flex flex-col items-center justify-center gap-2 transition-all px-4 cursor-pointer relative overflow-hidden',
+      'touch-none select-none [-webkit-touch-callout:none] [-webkit-tap-highlight-color:transparent]',
       stateClass
     ]"
   >
@@ -38,7 +47,7 @@ const stateClass = computed(() => {
     </div>
     <span class="font-bold text-sm tracking-wide">{{ label }}</span>
     <span class="text-[10px] font-mono text-zinc-400">
-      {{ responded ? 'Registrado' : `${n} passos atrás` }}
+      {{ n }} passos atrás
     </span>
   </button>
 </template>
