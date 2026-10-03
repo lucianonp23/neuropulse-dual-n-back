@@ -122,6 +122,10 @@
     }
   body {
     @apply bg-background text-foreground;
+    /* The app is dark-only; match it so overscroll and the safe-area padding don't flash white */
+    background-color: #0a0a0a;
+    /* Keep content clear of the notch / home indicator when launched full-screen on iOS */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
   html {
     @apply font-sans;

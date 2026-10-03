@@ -40,6 +40,7 @@ NeuroPulse runs entirely in the browser, with no backend. Sounds are synthesized
 - **Performance report** at the end of each session: hits, false positives and misses per modality.
 - **Keyboard shortcuts:** `A` position · `L` letter · `M` mute · `Esc` quit.
 - **Saved preferences** in `localStorage`: level, audio and feedback.
+- **Installable PWA:** works offline and can be added to the home screen (iPhone: Share → Add to Home Screen) to open full-screen like a native app.
 
 > The interface is in Brazilian Portuguese.
 
@@ -116,7 +117,6 @@ The app runs at `http://localhost:3000`.
 <!-- Edit freely; these are just suggestions -->
 - [ ] Session history with a progress chart
 - [ ] Unit tests for `game-logic.ts`
-- [ ] PWA support for offline use
 
 ## 👤 Author
 

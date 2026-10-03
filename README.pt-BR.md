@@ -40,6 +40,7 @@ O NeuroPulse roda inteiro no navegador, sem backend. Os sons são sintetizados e
 - **Relatório de desempenho** ao fim de cada sessão: acertos, falsos positivos e omissões por modalidade.
 - **Atalhos de teclado:** `A` posição · `L` letra · `M` mudo · `Esc` encerrar.
 - **Preferências salvas** no `localStorage`: nível, áudio e feedback.
+- **PWA instalável:** funciona offline e pode ser adicionado à tela de início (iPhone: Compartilhar → Adicionar à Tela de Início), abrindo em tela cheia como um app nativo.
 
 ## 📸 Screenshots
 
@@ -114,7 +115,6 @@ O app abre em `http://localhost:3000`.
 <!-- Edite à vontade; são só sugestões -->
 - [ ] Histórico de sessões com gráfico de evolução
 - [ ] Testes unitários para `game-logic.ts`
-- [ ] Suporte a PWA para uso offline
 
 ## 👤 Autor
 

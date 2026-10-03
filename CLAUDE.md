@@ -12,7 +12,8 @@ NeuroPulse Dual N-Back: a browser-only working-memory trainer (dual n-back task)
 - `npm run dev`: Vite dev server on port 3000, bound to 0.0.0.0
 - `npm run build`: production build to `dist/`
 - `npm run lint`: type-check only (`vue-tsc --noEmit`, covers `.vue` SFCs). There is no ESLint and there are no tests.
-- `npm run preview`: serve the built `dist/`
+- `npm run preview`: serve the built `dist/`. Use this (not `dev`) to test PWA behavior; the service worker is only generated in production builds.
+- `npm run generate-pwa-assets`: regenerate the PNG/ICO icons in `public/` from `public/icon.svg` (config in `pwa-assets.config.ts`). Run it after changing the SVG.
 
 Another local project may also be bound to port 3000 on IPv6; if `localhost:3000` returns an Express 404, use `http://127.0.0.1:3000`.
 
@@ -23,6 +24,7 @@ Another local project may also be bound to port 3000 on IPv6; if `localhost:3000
 - The app is **Vue 3** (`<script setup lang="ts">`) with Tailwind v4 (via `@tailwindcss/vite`), `lucide-vue-next` and `vue-sonner`. There are no shadcn components and the `shadcn` package is not installed; `components.json`, the shadcn-style theme tokens in `src/index.css`, and `lib/utils.ts` (`cn`, not imported anywhere) are leftovers from the AI Studio template.
 - The `@/` alias resolves to the **repo root**, not `src/`. So `@/lib/utils` is `lib/utils.ts`, and app code lives at `src/lib/*`.
 - Leave the `server.hmr` / `DISABLE_HMR` block in `vite.config.ts` alone. AI Studio relies on it.
+- **PWA:** `vite-plugin-pwa` in `vite.config.ts` generates the manifest and a Workbox service worker (`registerType: 'autoUpdate'`, precaches all built assets for offline use). iOS needs the extra `apple-*` tags and `apple-touch-icon` in `index.html`. The status bar is `black-translucent`, so `body` gets `env(safe-area-inset-*)` padding in `src/index.css`. Keep the `#0a0a0a` background/theme colors in sync across manifest, `index.html`, `index.css` and `pwa-assets.config.ts`.
 - User-facing text (toasts, labels) is in **Brazilian Portuguese**. Keep new UI strings in pt-BR.
 
 ## Architecture
