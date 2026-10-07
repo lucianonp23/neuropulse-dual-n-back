@@ -7,7 +7,7 @@ import { useGameSettings } from '../../composables/useGameSettings';
 
 const { settings } = useGameSettings();
 const { currentTrial, isAudioPlaying } = useGameSession();
-const { audio, toggleMute, phoneticFor } = useAudioSettings();
+const { audio, toggleMute } = useAudioSettings();
 
 const feedbackLabel = computed(() => {
   if (!settings.value.feedback) return 'Feedback Desligado (Modo Cego)';
@@ -26,12 +26,9 @@ const feedbackLabel = computed(() => {
       />
       <span class="text-zinc-400">Estímulo Auditivo:</span>
       <span class="text-emerald-400 font-bold text-sm">{{ currentTrial?.letter ?? '-' }}</span>
-      <span v-if="currentTrial && audio.stimulusMode === 'speech'" class="text-zinc-500 font-normal text-[11px]">
-        ("{{ phoneticFor(currentTrial.letter) }}")
-      </span>
     </div>
     <div class="flex items-center gap-3">
-      <span class="text-[10px] text-zinc-500 uppercase">{{ feedbackLabel }}</span>
+      <span class="hidden sm:inline text-[10px] text-zinc-500 uppercase">{{ feedbackLabel }}</span>
       <button 
         @click="toggleMute"
         class="text-zinc-500 hover:text-zinc-300 transition-colors"

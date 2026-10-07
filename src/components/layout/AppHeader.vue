@@ -10,7 +10,7 @@ const { audio, toggleMute } = useAudioSettings();
 </script>
 
 <template>
-  <header class="flex items-center justify-between mb-8 border-b border-zinc-800 pb-6">
+  <header class="flex flex-wrap items-center justify-between gap-4 mb-8 border-b border-zinc-800 pb-6">
     <div class="flex items-center gap-3">
       <div class="p-2.5 bg-emerald-500/10 rounded-xl border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
         <Brain class="w-7 h-7 text-emerald-400" />
@@ -54,7 +54,7 @@ const { audio, toggleMute } = useAudioSettings();
 
         <button 
           @click="quitSession"
-          class="px-3 py-1.5 rounded-xl border border-zinc-700 bg-zinc-900 hover:border-rose-500/50 hover:bg-rose-500/10 text-zinc-300 hover:text-rose-400 font-mono text-xs font-semibold flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-sm group"
+          class="hidden sm:flex px-3 py-1.5 rounded-xl border border-zinc-700 bg-zinc-900 hover:border-rose-500/50 hover:bg-rose-500/10 text-zinc-300 hover:text-rose-400 font-mono text-xs font-semibold items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-sm group"
           title="Sair da sessão e voltar ao menu (ou pressione Esc)"
         >
           <ArrowLeft class="w-3.5 h-3.5 text-zinc-400 group-hover:text-rose-400 transition-colors" />

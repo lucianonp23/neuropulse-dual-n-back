@@ -10,6 +10,11 @@ import { useKeyboardShortcuts } from './composables/useKeyboardShortcuts';
 
 const { phase } = useGameSession();
 useKeyboardShortcuts();
+
+// Each screen starts at the top instead of inheriting the previous screen's scroll
+// position (e.g. the lobby scrolled down to the audio settings). Runs after the old
+// screen has faded out, so the jump isn't visible.
+const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'instant' });
 </script>
 
 <template>
@@ -22,7 +27,7 @@ useKeyboardShortcuts();
       <AppHeader />
 
       <main class="relative">
-        <transition name="fade" mode="out-in">
+        <transition name="fade" mode="out-in" @before-enter="scrollToTop">
           <SetupView v-if="phase === 'idle'" key="idle" />
           <GameView v-else-if="phase === 'playing'" key="playing" />
           <ResultsView v-else key="results" />
