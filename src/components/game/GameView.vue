@@ -7,14 +7,28 @@ import SpatialGrid from './SpatialGrid.vue';
 import StimulusMonitor from './StimulusMonitor.vue';
 
 const { settings } = useGameSettings();
-const { currentTrial, responded, feedback, isAudioPlaying, canRespond, progress, respond, quitSession } = useGameSession();
+const { currentTrial, countdown, responded, feedback, isAudioPlaying, canRespond, progress, respond, quitSession } = useGameSession();
 </script>
 
 <template>
   <div class="flex flex-col items-center gap-10">
     <StimulusMonitor />
 
-    <SpatialGrid :trial="currentTrial" />
+    <div class="relative w-full max-w-md">
+      <SpatialGrid :trial="currentTrial" />
+
+      <transition name="countdown-fade">
+        <div
+          v-if="countdown !== null"
+          class="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-3xl bg-zinc-950/70 backdrop-blur-sm select-none"
+        >
+          <span class="text-xs font-mono text-zinc-400 uppercase tracking-widest">Prepare-se</span>
+          <span :key="countdown" class="countdown-number text-8xl font-black text-emerald-400 drop-shadow-[0_0_25px_rgba(16,185,129,0.5)]">
+            {{ countdown }}
+          </span>
+        </div>
+      </transition>
+    </div>
 
     <div class="grid grid-cols-2 gap-6 w-full max-w-md touch-none">
       <ResponseButton
@@ -76,3 +90,24 @@ const { currentTrial, responded, feedback, isAudioPlaying, canRespond, progress,
     </div>
   </div>
 </template>
+
+<style scoped>
+.countdown-number {
+  animation: countdown-pop 1s ease-out;
+}
+
+@keyframes countdown-pop {
+  0% { transform: scale(1.4); opacity: 0; }
+  20% { transform: scale(1); opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
+.countdown-fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.countdown-fade-leave-to {
+  opacity: 0;
+}
+</style>

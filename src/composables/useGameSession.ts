@@ -18,6 +18,8 @@ import { useGameSettings } from './useGameSettings';
 
 /** How long the "audio playing" pulse stays on after each stimulus. */
 const AUDIO_PULSE_MS = 400;
+/** Seconds counted down between pressing start and the first trial. */
+const COUNTDOWN_SECONDS = 3;
 
 /**
  * Runs a training session: the trial loop, response scoring and the end-of-session
@@ -36,6 +38,8 @@ export const useGameSession = createSharedComposable(() => {
   /** Visual feedback for the current trial's answers (only set when feedback is on). */
   const feedback = reactive<Record<Modality, ResponseFeedback>>({ position: null, letter: null });
   const isAudioPlaying = ref(false);
+  /** Seconds left before the first trial, or null once the trials are running. */
+  const countdown = ref<number | null>(null);
 
   /** N level the last session was played at, before any level-up. */
   const previousN = ref(settings.value.n);
@@ -43,6 +47,7 @@ export const useGameSession = createSharedComposable(() => {
 
   let trialTimer: ReturnType<typeof setTimeout> | null = null;
   let audioPulseTimer: ReturnType<typeof setTimeout> | null = null;
+  let countdownTimer: ReturnType<typeof setTimeout> | null = null;
 
   const currentTrial = computed<TrialData | null>(() => sequence.value[currentIndex.value] ?? null);
   /** Responses only count once there is a trial N steps back to compare against. */
@@ -53,8 +58,11 @@ export const useGameSession = createSharedComposable(() => {
   const clearTimers = () => {
     if (trialTimer) clearTimeout(trialTimer);
     if (audioPulseTimer) clearTimeout(audioPulseTimer);
+    if (countdownTimer) clearTimeout(countdownTimer);
     trialTimer = null;
     audioPulseTimer = null;
+    countdownTimer = null;
+    countdown.value = null;
   };
 
   const resetTrialResponses = () => {
@@ -103,8 +111,22 @@ export const useGameSession = createSharedComposable(() => {
     sessionLeveledUp.value = false;
     sequence.value = generateSequence(settings.value.n, settings.value.trials);
     stats.value = createStats(sequence.value, settings.value.n);
+    currentIndex.value = -1;
+    resetTrialResponses();
     phase.value = 'playing';
-    showTrial(0);
+    tickCountdown(COUNTDOWN_SECONDS);
+  };
+
+  /** Shows `seconds` on screen, then counts down once per second before the first trial. */
+  const tickCountdown = (seconds: number) => {
+    if (seconds <= 0) {
+      countdown.value = null;
+      countdownTimer = null;
+      showTrial(0);
+      return;
+    }
+    countdown.value = seconds;
+    countdownTimer = setTimeout(() => tickCountdown(seconds - 1), 1000);
   };
 
   // --- Responses ----------------------------------------------------------
@@ -206,6 +228,7 @@ export const useGameSession = createSharedComposable(() => {
     responded,
     feedback,
     isAudioPlaying,
+    countdown,
     previousN,
     sessionLeveledUp,
     canRespond,
